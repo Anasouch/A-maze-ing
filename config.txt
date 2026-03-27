@@ -1,6 +1,20 @@
 WIDTH=20
-HEIGHT=15
-ENTRY=0,0
+HEIGHT=15 #Comment
+EnTrY=0,0
 EXIT=19,14
 OUTPUT_FILE=output.txt
+
+
+#Comment
+#Comment
+#Comment
+#Comment
+#Comment
+#Comment
+#Comment
+#Comment
+#Comment
+#Comment
+
+
 PERFECT=True
