@@ -41,7 +41,7 @@ def parsing() -> Optional[Dict[str, Any]]:
 
             for s in get_conf:
                 if s.strip() != "" and s.strip()[0] != '#':
-                    conf_lists.append(s.split("="))
+                    conf_lists.append(s.split("=", 1))
 
             for a_list in conf_lists:
                 if '#' in a_list[1]:
@@ -70,6 +70,15 @@ def parsing() -> Optional[Dict[str, Any]]:
             ex1 = int(exit[0])
             ex2 = int(exit[1])
             conf_dict["EXIT"] = (ex1, ex2)
+
+            if (
+                '/' in conf_dict["OUTPUT_FILE"]
+                or "\\" in conf_dict["OUTPUT_FILE"]
+            ):
+                raise InvalidValue(
+                    f"Invalid config {conf_dict["OUTPUT_FILE"]}, "
+                    "file name must not include '/' or double '\\'"
+                    )
 
             booleen = ["True", "False"]
             if conf_dict["PERFECT"] not in booleen:
