@@ -75,6 +75,7 @@ def parsing() -> Optional[Dict[str, Any]]:
             ex1 = int(exit[0])
             ex2 = int(exit[1])
             conf_dict["EXIT"] = (ex1, ex2)
+
             if len(entry) != 2 or len(exit) != 2:
                 raise InvalidValue(
                     "Invalid config, Entry and Exit must include 2 cordinates"
