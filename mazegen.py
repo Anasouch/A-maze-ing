@@ -56,8 +56,10 @@ class Direction:
         return Direction.OPPOSITES[direction]
 
     @staticmethod
-    def get_all_directions() -> list:
-        return [Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST]
+    def get_all_directions() -> List[str]:
+        return [
+            Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST
+            ]
 
 
 class Grid:

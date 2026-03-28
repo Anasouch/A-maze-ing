@@ -1,4 +1,5 @@
 import sys
+from typing import Dict
 
 
 class TokenError(Exception):
@@ -26,7 +27,7 @@ def comment_index(s: str) -> int:
     return -1
 
 
-def parsing() -> dict[str, str]:
+def parsing() -> Dict[str, str]:
     try:
         if len(sys.argv) != 2:
             raise TokenError(
