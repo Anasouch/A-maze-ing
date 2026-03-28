@@ -18,3 +18,4 @@ OUTPUT_FILE=output.txt
 
 
 PERFECT=True
+SEED=1337
