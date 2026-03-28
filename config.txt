@@ -1,21 +1,7 @@
 WIDTH=20
-HEIGHT=15 #Comment
+HEIGHT=15
 EnTrY=0,0
 EXIT=19,14
 OUTPUT_FILE=output.txt
-
-
-#Comment
-#Comment
-#Comment
-#Comment
-#Comment
-#Comment
-#Comment
-#Comment
-#Comment
-#Comment
-
-
 PERFECT=True
 SEED=1337
