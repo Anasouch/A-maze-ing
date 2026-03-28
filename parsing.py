@@ -1,5 +1,5 @@
+from typing import Dict, Any, Optional
 import sys
-from typing import Dict
 
 
 class TokenError(Exception):
@@ -27,7 +27,7 @@ def comment_index(s: str) -> int:
     return -1
 
 
-def parsing() -> Dict[str, str]:
+def parsing() -> Optional[Dict[str, Any]]:
     try:
         if len(sys.argv) != 2:
             raise TokenError(
@@ -37,7 +37,7 @@ def parsing() -> Dict[str, str]:
         with open("config.txt", "r") as file:
             get_conf = file.read().split("\n")
             conf_lists = []
-            conf_dict = {}
+            conf_dict: Dict[str, Any] = {}
 
             for s in get_conf:
                 if s.strip() != "" and s.strip()[0] != '#':
@@ -55,25 +55,33 @@ def parsing() -> Dict[str, str]:
                 if k not in keys:
                     raise InvalidKey(f"Invalid config '{k}', is not a key")
 
-            width = int(conf_dict["WIDTH"])
-            height = int(conf_dict["HEIGHT"])
+            conf_dict["WIDTH"] = int(conf_dict["WIDTH"])
+            width = conf_dict["WIDTH"]
+
+            conf_dict["HEIGHT"] = int(conf_dict["HEIGHT"])
+            height = conf_dict["HEIGHT"]
+
             entry = conf_dict["ENTRY"].split(",")
             en1 = int(entry[0])
             en2 = int(entry[1])
+            conf_dict["ENTRY"] = (en1, en2)
+
             exit = conf_dict["EXIT"].split(",")
             ex1 = int(exit[0])
             ex2 = int(exit[1])
-            booleen = ["True", "False"]
+            conf_dict["EXIT"] = (ex1, ex2)
 
+            booleen = ["True", "False"]
             if conf_dict["PERFECT"] not in booleen:
                 raise InvalidValue(
                     f"Invalid config '{conf_dict["PERFECT"]}', is not a value"
                     )
+            conf_dict["PERFECT"] = bool(conf_dict["PERFECT"])
 
             if "SEED" in conf_dict:
-                int(conf_dict["SEED"])
+                conf_dict["SEED"] = int(conf_dict["SEED"])
             else:
-                conf_dict["SEED"] = "42"
+                conf_dict["SEED"] = 42
 
             if width <= 0 or height <= 0:
                 raise InvalidValue(
@@ -96,13 +104,13 @@ def parsing() -> Dict[str, str]:
                     "Invalid config, cordinate is out of range"
                     )
 
-            if entry == exit:
+            if conf_dict["ENTRY"] == conf_dict["EXIT"]:
                 raise InvalidValue(
                     "Invalid config, Entry and Exit must be different"
                     )
     except Exception as e:
         print(f"Error: {e}")
-        conf_dict = {}
+        return None
     return conf_dict
 
 
