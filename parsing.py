@@ -26,10 +26,12 @@ def comment_index(s: str) -> int:
     return -1
 
 
-def parsing() -> dict:
+def parsing() -> dict[str, str]:
     try:
         if len(sys.argv) != 2:
-            raise TokenError("Invalid tokens <python3 a_maze_ing.py config.txt>")
+            raise TokenError(
+                "Invalid tokens <python3 a_maze_ing.py config.txt>"
+                )
 
         with open("config.txt", "r") as file:
             get_conf = file.read().split("\n")
@@ -46,7 +48,8 @@ def parsing() -> dict:
                     a_list[1] = a_list[1][:i]
                 conf_dict[a_list[0].upper().strip()] = a_list[1].strip()
 
-            keys = ["WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT", "SEED"]
+            keys = ["WIDTH", "HEIGHT", "ENTRY", "EXIT",
+                    "OUTPUT_FILE", "PERFECT", "SEED"]
             for k in conf_dict.keys():
                 if k not in keys:
                     raise InvalidKey(f"Invalid config '{k}', is not a key")
@@ -62,24 +65,40 @@ def parsing() -> dict:
             booleen = ["True", "False"]
 
             if conf_dict["PERFECT"] not in booleen:
-                raise InvalidValue(f"Invalid config '{conf_dict["PERFECT"]}', is not a value")
+                raise InvalidValue(
+                    f"Invalid config '{conf_dict["PERFECT"]}', is not a value"
+                    )
 
             if "SEED" in conf_dict:
                 int(conf_dict["SEED"])
             else:
-                conf_dict["SEED"] = 42
+                conf_dict["SEED"] = "42"
 
             if width <= 0 or height <= 0:
-                raise InvalidValue("Invalid config, width and height must be greater than '0'")
+                raise InvalidValue(
+                    "Invalid config, width and height must be greater than '0'"
+                    )
 
-            if ((en1 < 0) or (en2 < 0)) or ((ex1 < 0) or (ex2 < 0)):
-                raise InvalidValue("Invalid config, cordinates must be positive")
+            if (
+                ((en1 < 0) or (en2 < 0))
+                or ((ex1 < 0) or (ex2 < 0))
+            ):
+                raise InvalidValue(
+                    "Invalid config, cordinates must be positive"
+                    )
 
-            if ((en1 >= width) or (en2 >= height)) or ((ex1 >= width) or (ex2 >= height)):
-                raise InvalidValue("Invalid config, cordinate is out of range")
+            if (
+                ((en1 >= width) or (en2 >= height))
+                or ((ex1 >= width) or (ex2 >= height))
+            ):
+                raise InvalidValue(
+                    "Invalid config, cordinate is out of range"
+                    )
 
             if entry == exit:
-                raise InvalidValue("Invalid config, Entry and Exit must be different")
+                raise InvalidValue(
+                    "Invalid config, Entry and Exit must be different"
+                    )
     except Exception as e:
         print(f"Error: {e}")
         conf_dict = {}
