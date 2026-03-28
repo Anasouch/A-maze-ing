@@ -1,4 +1,4 @@
-from typing import Dict, Tuple, List, Optional
+from typing import Dict, Tuple, List
 import random
 
 
@@ -94,7 +94,7 @@ class MazeGenerator:
         self,
         width: int,
         height: int,
-        seed: Optional[int] = None,
+        seed: int,
     ) -> None:
         if width < 3 or height < 3:
             raise ValueError("width and height must be at least 3")
