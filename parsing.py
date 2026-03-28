@@ -54,6 +54,11 @@ def parsing() -> Optional[Dict[str, Any]]:
             for k in conf_dict.keys():
                 if k not in keys:
                     raise InvalidKey(f"Invalid config '{k}', is not a key")
+            if "SEED" in keys:
+                keys.remove("SEED")
+            for k in keys:
+                if k not in conf_dict.keys():
+                    raise InvalidKey(f"Missing config '{k}'")
 
             conf_dict["WIDTH"] = int(conf_dict["WIDTH"])
             width = conf_dict["WIDTH"]
@@ -70,6 +75,10 @@ def parsing() -> Optional[Dict[str, Any]]:
             ex1 = int(exit[0])
             ex2 = int(exit[1])
             conf_dict["EXIT"] = (ex1, ex2)
+            if len(entry) != 2 or len(exit) != 2:
+                raise InvalidValue(
+                    "Invalid config, Entry and Exit must include 2 cordinates"
+                    )
 
             if (
                 '/' in conf_dict["OUTPUT_FILE"]
@@ -124,4 +133,5 @@ def parsing() -> Optional[Dict[str, Any]]:
 
 
 if __name__ == "__main__":
-    print(parsing())
+    if parsing():
+        print(parsing())
