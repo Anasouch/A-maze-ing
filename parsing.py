@@ -102,6 +102,7 @@ def parsing() -> dict[str, str]:
     except Exception as e:
         print(f"Error: {e}")
         conf_dict = {}
+
     return conf_dict
 
 
