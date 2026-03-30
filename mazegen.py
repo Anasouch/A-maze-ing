@@ -217,13 +217,3 @@ class MazeGenerator:
         opposite = Direction.get_opposite(direction)
         nx, ny = Direction.get_next_position(x, y, direction)
         self.grid.cells[ny][nx].open_wall(opposite)
-
-
-def display_maze(maze: Grid) -> None:
-    pass
-
-
-if __name__ == "__main__":
-    maze_gen = MazeGenerator(15, 12, (0, 0), (14, 11), True, 42)
-    maze = maze_gen.generate()
-    display_maze(maze)

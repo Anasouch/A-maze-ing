@@ -27,14 +27,14 @@ def comment_index(s: str) -> int:
     return -1
 
 
-def parsing() -> Optional[Dict[str, Any]]:
+def pars() -> Optional[Dict[str, Any]]:
     try:
         if len(sys.argv) != 2:
             raise TokenError(
                 "Invalid tokens <python3 a_maze_ing.py config.txt>"
                 )
 
-        with open("config.txt", "r") as file:
+        with open(sys.argv[1], "r") as file:
             get_conf = file.read().split("\n")
             conf_lists = []
             conf_dict: Dict[str, Any] = {}
@@ -131,8 +131,3 @@ def parsing() -> Optional[Dict[str, Any]]:
         print(f"Error: {e}")
         return None
     return conf_dict
-
-
-if __name__ == "__main__":
-    if parsing():
-        print(parsing())
