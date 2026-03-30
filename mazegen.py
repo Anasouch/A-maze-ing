@@ -1,5 +1,75 @@
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Any
 import random
+import sys
+
+
+def class_parsing(conf_list: List[Any]) -> int:
+    width = conf_list[0]
+    height = conf_list[1]
+    entry = conf_list[2]
+    exit = conf_list[3]
+    perfect = conf_list[4]
+    seed = conf_list[5]
+
+    try:
+        width = int(width)
+        height = int(height)
+
+        if isinstance(entry, tuple) is False:
+            raise ValueError(
+                f"Invalid config {entry}, Entry and Exit must be tuples"
+                )
+        en1 = int(entry[0])
+        en2 = int(entry[1])
+
+        if isinstance(exit, tuple) is False:
+            raise ValueError(
+                f"Invalid config {exit}, Entry and Exit must be tuples"
+                )
+        ex1 = int(exit[0])
+        ex2 = int(exit[1])
+
+        if len(entry) != 2 or len(exit) != 2:
+            raise ValueError(
+                "Invalid config, Entry and Exit must include 2 cordinates"
+                )
+
+        if isinstance(perfect, bool) is False:
+            raise ValueError(
+                f"Invalid config '{perfect}', is not a value"
+                )
+        if seed is not None:
+            seed = int(seed)
+
+        if width <= 0 or height <= 0:
+            raise ValueError(
+                "Invalid config, width and height must be greater than '0'"
+                )
+
+        if (
+            ((en1 < 0) or (en2 < 0))
+            or ((ex1 < 0) or (ex2 < 0))
+        ):
+            raise ValueError(
+                "Invalid config, cordinates must be positive"
+                )
+
+        if (
+            ((en1 >= width) or (en2 >= height))
+            or ((ex1 >= width) or (ex2 >= height))
+        ):
+            raise ValueError(
+                "Invalid config, cordinate is out of range"
+                )
+
+        if entry == exit:
+            raise ValueError(
+                "Invalid config, Entry and Exit must be different"
+                )
+    except Exception as e:
+        print(f"Error: {e}")
+        return 0
+    return 1
 
 
 class Cell:
@@ -22,7 +92,6 @@ class Cell:
 
 
 class Direction:
-
     NORTH = "north"
     EAST = "east"
     SOUTH = "south"
@@ -64,8 +133,6 @@ class Direction:
 
 class Grid:
     def __init__(self, width: int, height: int) -> None:
-        if width < 3 or height < 3:
-            raise ValueError("width and height must be at least 3")
         self.width = width
         self.height = height
         self.cells: List[List[Cell]] = []
@@ -89,21 +156,26 @@ class Grid:
 
 
 class MazeGenerator:
-
     def __init__(
         self,
         width: int,
         height: int,
-        seed: int,
+        entry: Tuple[int, int],
+        exit: Tuple[int, int],
+        perfect: bool,
+        seed: int
     ) -> None:
-        if width < 3 or height < 3:
-            raise ValueError("width and height must be at least 3")
+        conf_list = [width, height, entry, exit, perfect, seed]
+        if class_parsing(conf_list) == 0:
+            sys.exit()
         self.width = width
         self.height = height
+        self.entry = entry
+        self.exit = exit
+        self.perfect = perfect
         self.seed = seed
 
     def generate(self) -> Grid:
-
         self.grid = Grid(self.width, self.height)
         self.visited: List[List[bool]] = []
         for _ in range(self.height):
@@ -145,3 +217,13 @@ class MazeGenerator:
         opposite = Direction.get_opposite(direction)
         nx, ny = Direction.get_next_position(x, y, direction)
         self.grid.cells[ny][nx].open_wall(opposite)
+
+
+def display_maze(maze: Grid) -> None:
+    pass
+
+
+if __name__ == "__main__":
+    maze_gen = MazeGenerator(15, 12, (0, 0), (14, 11), True, 42)
+    maze = maze_gen.generate()
+    display_maze(maze)

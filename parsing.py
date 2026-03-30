@@ -100,7 +100,7 @@ def parsing() -> Optional[Dict[str, Any]]:
             if "SEED" in conf_dict:
                 conf_dict["SEED"] = int(conf_dict["SEED"])
             else:
-                conf_dict["SEED"] = 42
+                conf_dict["SEED"] = None
 
             if width <= 0 or height <= 0:
                 raise InvalidValue(
