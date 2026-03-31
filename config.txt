@@ -1,7 +1,7 @@
 width=20
-HEIGHT=15
-entry=0,0
-ExIt=19,14
+Height=15
+EnTry=0,0
+EXIT=19,14
 OUTPUT_FILE=maze.txt
 PERFECT=True
 SEED=42
