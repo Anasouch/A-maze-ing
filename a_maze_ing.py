@@ -11,7 +11,7 @@ if __name__ == "__main__":
     conf_dict = pars()
     if not conf_dict:
         sys.exit()
-    maze_gen = MazeGenerator(
+    maze = MazeGenerator(
         conf_dict["WIDTH"],
         conf_dict["HEIGHT"],
         conf_dict["ENTRY"],
@@ -19,5 +19,5 @@ if __name__ == "__main__":
         conf_dict["PERFECT"],
         conf_dict["SEED"]
         )
-    maze = maze_gen.generate()
-    display_maze(maze)
+    maze_gen = maze.generate()
+    display_maze(maze_gen)

@@ -34,7 +34,7 @@ def pars() -> Optional[Dict[str, Any]]:
                 "Invalid tokens <python3 a_maze_ing.py config.txt>"
                 )
 
-        with open(sys.argv[1], "r") as file:
+        with open(sys.argv[1]) as file:
             get_conf = file.read().split("\n")
             conf_lists = []
             conf_dict: Dict[str, Any] = {}

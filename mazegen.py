@@ -3,7 +3,7 @@ import random
 import sys
 
 
-def class_parsing(conf_list: List[Any]) -> int:
+def class_pars(conf_list: List[Any]) -> int:
     width = conf_list[0]
     height = conf_list[1]
     entry = conf_list[2]
@@ -38,8 +38,8 @@ def class_parsing(conf_list: List[Any]) -> int:
             raise ValueError(
                 f"Invalid config '{perfect}', is not a value"
                 )
-        if seed is not None:
-            seed = int(seed)
+
+        seed = int(seed)
 
         if width <= 0 or height <= 0:
             raise ValueError(
@@ -165,8 +165,10 @@ class MazeGenerator:
         perfect: bool,
         seed: int
     ) -> None:
+        if not seed:
+            seed = random.randint(-2147483648, 2147483647)
         conf_list = [width, height, entry, exit, perfect, seed]
-        if class_parsing(conf_list) == 0:
+        if class_pars(conf_list) == 0:
             sys.exit()
         self.width = width
         self.height = height
@@ -204,7 +206,7 @@ class MazeGenerator:
                     continue
 
                 self.visited[ny][nx] = True
-                self.crave_wall(x, y, direction)
+                self.destroy_wall(x, y, direction)
                 stack.append((nx, ny))
                 found_unvisited = True
                 break
@@ -212,7 +214,7 @@ class MazeGenerator:
                 stack.pop()
         return self.grid
 
-    def crave_wall(self, x: int, y: int, direction: str) -> None:
+    def destroy_wall(self, x: int, y: int, direction: str) -> None:
         self.grid.cells[y][x].open_wall(direction)
         opposite = Direction.get_opposite(direction)
         nx, ny = Direction.get_next_position(x, y, direction)
