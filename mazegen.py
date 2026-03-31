@@ -59,7 +59,7 @@ def class_pars(conf_list: List[Any]) -> int:
             or ((ex1 >= width) or (ex2 >= height))
         ):
             raise ValueError(
-                "Invalid config, cordinate is out of range"
+                "Invalid config, a cordinate is out of range"
                 )
 
         if entry == exit:

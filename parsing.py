@@ -58,7 +58,7 @@ def pars() -> Optional[Dict[str, Any]]:
                 keys.remove("SEED")
             for k in keys:
                 if k not in conf_dict.keys():
-                    raise InvalidKey(f"Missing config '{k}'")
+                    raise InvalidKey(f"Missing the '{k}' config")
 
             conf_dict["WIDTH"] = int(conf_dict["WIDTH"])
             width = conf_dict["WIDTH"]
@@ -88,6 +88,14 @@ def pars() -> Optional[Dict[str, Any]]:
                 raise InvalidValue(
                     f"Invalid config {conf_dict["OUTPUT_FILE"]}, "
                     "file name must not include '/' or double '\\'"
+                    )
+            if (
+                conf_dict["OUTPUT_FILE"] == ".."
+                or conf_dict["OUTPUT_FILE"] == "."
+            ):
+                raise InvalidValue(
+                    f"Invalid config '{conf_dict["OUTPUT_FILE"]}', "
+                    "it is a directory"
                     )
 
             booleen = ["True", "False"]
@@ -120,7 +128,7 @@ def pars() -> Optional[Dict[str, Any]]:
                 or ((ex1 >= width) or (ex2 >= height))
             ):
                 raise InvalidValue(
-                    "Invalid config, cordinate is out of range"
+                    "Invalid config, a cordinate is out of range"
                     )
 
             if conf_dict["ENTRY"] == conf_dict["EXIT"]:
