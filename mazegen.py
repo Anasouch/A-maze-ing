@@ -3,6 +3,10 @@ import random
 import sys
 
 
+class InvalidConf(Exception):
+    pass
+
+
 def class_pars(conf_list: List[Any]) -> int:
     width = conf_list[0]
     height = conf_list[1]
@@ -16,33 +20,33 @@ def class_pars(conf_list: List[Any]) -> int:
         height = int(height)
 
         if isinstance(entry, tuple) is False:
-            raise ValueError(
+            raise InvalidConf(
                 f"Invalid config {entry}, Entry and Exit must be tuples"
                 )
         en1 = int(entry[0])
         en2 = int(entry[1])
 
         if isinstance(exit, tuple) is False:
-            raise ValueError(
+            raise InvalidConf(
                 f"Invalid config {exit}, Entry and Exit must be tuples"
                 )
         ex1 = int(exit[0])
         ex2 = int(exit[1])
 
         if len(entry) != 2 or len(exit) != 2:
-            raise ValueError(
+            raise InvalidConf(
                 "Invalid config, Entry and Exit must include 2 cordinates"
                 )
 
         if isinstance(perfect, bool) is False:
-            raise ValueError(
+            raise InvalidConf(
                 f"Invalid config '{perfect}', is not a value"
                 )
 
         seed = int(seed)
 
         if width <= 0 or height <= 0:
-            raise ValueError(
+            raise InvalidConf(
                 "Invalid config, width and height must be greater than '0'"
                 )
 
@@ -50,7 +54,7 @@ def class_pars(conf_list: List[Any]) -> int:
             ((en1 < 0) or (en2 < 0))
             or ((ex1 < 0) or (ex2 < 0))
         ):
-            raise ValueError(
+            raise InvalidConf(
                 "Invalid config, cordinates must be positive"
                 )
 
@@ -58,12 +62,12 @@ def class_pars(conf_list: List[Any]) -> int:
             ((en1 >= width) or (en2 >= height))
             or ((ex1 >= width) or (ex2 >= height))
         ):
-            raise ValueError(
+            raise InvalidConf(
                 "Invalid config, a cordinate is out of range"
                 )
 
         if entry == exit:
-            raise ValueError(
+            raise InvalidConf(
                 "Invalid config, Entry and Exit must be different"
                 )
     except Exception as e:
