@@ -2,6 +2,5 @@ width=20
 Height=15
 EnTry=0,0
 EXIT=19,14
-OUTPUT_FILE=maze.txt
+OUTPUT_FILE=..hello
 PERFECT=True
-SEED=42

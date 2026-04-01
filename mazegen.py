@@ -91,9 +91,6 @@ class Cell:
     def has_wall(self, direction: str) -> bool:
         return self.walls[direction]
 
-    def get_all_walls(self) -> Dict[str, bool]:  # Unused!
-        return self.walls
-
 
 class Direction:
     NORTH = "north"
@@ -152,15 +149,6 @@ class Grid:
     def is_in_bounds(self, x: int, y: int) -> bool:
         return 0 <= x < self.width and 0 <= y < self.height
 
-    def get_cell(self, x: int, y: int) -> Cell:  # Unused!
-        return self.cells[y][x]
-
-    def get_width(self) -> int:  # Unused!
-        return self.width
-
-    def get_height(self) -> int:  # Unused!
-        return self.height
-
 
 class MazeGenerator:
     def __init__(
@@ -170,7 +158,7 @@ class MazeGenerator:
         entry: Tuple[int, int],
         exit: Tuple[int, int],
         perfect: bool,
-        seed: int
+        seed=None
     ) -> None:
         if not seed:
             seed = random.randint(-2147483648, 2147483647)
@@ -193,7 +181,6 @@ class MazeGenerator:
                 row.append(False)
             self.visited.append(row)
 
-        random.seed(self.seed)  # Why?
         self.visited[0][0] = True
 
         stack: List[Tuple[int, int]] = [(0, 0)]
@@ -265,13 +252,3 @@ class MazeOutput:
             f.write("\n")
             f.write(f"{entry[0]},{entry[1]}\n")
             f.write(f"{exit_pos[0]},{exit_pos[1]}\n")
-
-
-gen = MazeGenerator(20, 20, (1, 1), (19, 14), True, 42)
-grid = gen.generate()
-
-output = MazeOutput()
-output.save(grid, "maze.txt", (1, 1), (19, 14))
-
-with open("maze.txt") as f:
-    print(f.read())
