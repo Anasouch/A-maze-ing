@@ -226,3 +226,52 @@ class MazeGenerator:
         opposite = Direction.get_opposite(direction)
         nx, ny = Direction.get_next_position(x, y, direction)
         self.grid.cells[ny][nx].open_wall(opposite)
+
+
+class MazeOutput:
+
+    @staticmethod
+    def cell_to_hex(cell: Cell) -> int:
+        value = 0
+
+        if cell.has_wall("north"):
+            value += 1
+        if cell.has_wall("east"):
+            value += 2
+        if cell.has_wall("south"):
+            value += 4
+        if cell.has_wall("west"):
+            value += 8
+
+        return value
+
+    def save(
+        self,
+        grid: Grid,
+        filename: str,
+        entry: Tuple[int, int],
+        exit_pos: Tuple[int, int]
+    ) -> None:
+
+        with open(filename, "w") as f:
+            for y in range(grid.get_height()):
+                line = ""
+                for x in range(grid.get_width()):
+                    cell = grid.get_cell(x, y)
+                    hex_value = self.cell_to_hex(cell)
+                    line += format(hex_value, "X")
+                f.write(line + "\n")
+
+            f.write("\n")
+            f.write(f"{entry[0]},{entry[1]}\n")
+            f.write(f"{exit_pos[0]},{exit_pos[1]}\n")
+
+
+gen = MazeGenerator(20, 20, (1, 1), (19, 14), True, 42)
+grid = gen.generate()
+
+output = MazeOutput()
+output.save(grid, "maze.txt", (1, 1), (19, 14))
+
+with open("maze.txt") as f:
+    print(f.read())
