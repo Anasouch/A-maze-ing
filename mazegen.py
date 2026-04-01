@@ -193,7 +193,7 @@ class MazeGenerator:
                 row.append(False)
             self.visited.append(row)
 
-        random.seed(self.seed)  # What?
+        random.seed(self.seed)  # Why?
         self.visited[0][0] = True
 
         stack: List[Tuple[int, int]] = [(0, 0)]
