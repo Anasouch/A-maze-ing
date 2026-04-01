@@ -136,6 +136,6 @@ def pars() -> Optional[Dict[str, Any]]:
                     "Invalid config, Entry and Exit must be different"
                     )
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"ERROR: {e}")
         return None
     return conf_dict

@@ -71,7 +71,7 @@ def class_pars(conf_list: List[Any]) -> int:
                 "Invalid config, Entry and Exit must be different"
                 )
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"ERROR: {e}")
         return 0
     return 1
 
