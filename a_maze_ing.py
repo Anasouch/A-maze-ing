@@ -1,4 +1,5 @@
 from mazegen import MazeGenerator, Grid
+from mazepath import path
 from parsing import pars
 import sys
 
@@ -11,7 +12,7 @@ if __name__ == "__main__":
     conf_dict = pars()
     if not conf_dict:
         sys.exit()
-    maze = MazeGenerator(
+    maze_gen = MazeGenerator(
         conf_dict["WIDTH"],
         conf_dict["HEIGHT"],
         conf_dict["ENTRY"],
@@ -19,5 +20,6 @@ if __name__ == "__main__":
         conf_dict["PERFECT"],
         conf_dict["SEED"]
         )
-    maze_gen = maze.generate()
-    display_maze(maze_gen)
+    maze = maze_gen.generate()
+    display_maze(maze)
+    path(maze)

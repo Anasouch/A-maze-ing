@@ -91,7 +91,7 @@ class Cell:
     def has_wall(self, direction: str) -> bool:
         return self.walls[direction]
 
-    def get_all_walls(self) -> Dict[str, bool]:
+    def get_all_walls(self) -> Dict[str, bool]:  # Unused!
         return self.walls
 
 
@@ -131,7 +131,10 @@ class Direction:
     @staticmethod
     def get_all_directions() -> List[str]:
         return [
-            Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST
+            Direction.NORTH,
+            Direction.EAST,
+            Direction.SOUTH,
+            Direction.WEST
             ]
 
 
@@ -146,16 +149,16 @@ class Grid:
                 row.append(Cell())
             self.cells.append(row)
 
-    def get_cell(self, x: int, y: int) -> Cell:
-        return self.cells[y][x]
-
     def is_in_bounds(self, x: int, y: int) -> bool:
         return 0 <= x < self.width and 0 <= y < self.height
 
-    def get_width(self) -> int:
+    def get_cell(self, x: int, y: int) -> Cell:  # Unused!
+        return self.cells[y][x]
+
+    def get_width(self) -> int:  # Unused!
         return self.width
 
-    def get_height(self) -> int:
+    def get_height(self) -> int:  # Unused!
         return self.height
 
 
@@ -200,7 +203,7 @@ class MazeGenerator:
             directions: List[str] = Direction.get_all_directions()
             random.shuffle(directions)
 
-            found_unvisited = False
+            find_unvisited = False
             for direction in directions:
                 nx, ny = Direction.get_next_position(x, y, direction)
 
@@ -209,12 +212,12 @@ class MazeGenerator:
                 if self.visited[ny][nx]:
                     continue
 
-                self.visited[ny][nx] = True
                 self.destroy_wall(x, y, direction)
                 stack.append((nx, ny))
-                found_unvisited = True
+                find_unvisited = True
+                self.visited[ny][nx] = True
                 break
-            if found_unvisited is False:
+            if find_unvisited is False:
                 stack.pop()
         return self.grid
 
