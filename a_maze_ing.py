@@ -4,7 +4,7 @@ import sys
 
 
 def display_maze(maze: Grid) -> None:
-    ...
+    pass
 
 
 if __name__ == "__main__":
