@@ -50,6 +50,15 @@ def pars() -> Optional[Dict[str, Any]]:
                     a_list[1] = a_list[1][:i]
                 conf_dict[a_list[0].upper().strip()] = a_list[1].strip()
 
+            width = conf_dict["WIDTH"]
+            height = conf_dict["HEIGHT"]
+            entry = conf_dict["ENTRY"]
+            exit = conf_dict["EXIT"]
+            output_file = conf_dict["OUTPUT_FILE"]
+            perfect = conf_dict["PERFECT"]
+            if "SEED" in conf_dict:
+                seed = conf_dict["SEED"]
+
             keys = ["WIDTH", "HEIGHT", "ENTRY", "EXIT",
                     "OUTPUT_FILE", "PERFECT", "SEED"]
             for k in conf_dict.keys():
@@ -61,53 +70,43 @@ def pars() -> Optional[Dict[str, Any]]:
                 if k not in conf_dict.keys():
                     raise MissingConf(f"Missing the '{k}' config")
 
-            conf_dict["WIDTH"] = int(conf_dict["WIDTH"])
-            width = conf_dict["WIDTH"]
+            width = conf_dict["WIDTH"] = int(width)
+            height = conf_dict["HEIGHT"] = int(height)
 
-            conf_dict["HEIGHT"] = int(conf_dict["HEIGHT"])
-            height = conf_dict["HEIGHT"]
-
-            entry = conf_dict["ENTRY"].split(",")
+            entry = entry.split(",")
             en1 = int(entry[0])
             en2 = int(entry[1])
-            conf_dict["ENTRY"] = (en1, en2)
+            entry = conf_dict["ENTRY"] = (en1, en2)
 
-            exit = conf_dict["EXIT"].split(",")
+            exit = exit.split(",")
             ex1 = int(exit[0])
             ex2 = int(exit[1])
-            conf_dict["EXIT"] = (ex1, ex2)
+            exit = conf_dict["EXIT"] = (ex1, ex2)
 
             if len(entry) != 2 or len(exit) != 2:
                 raise InvalidConf(
                     "Invalid config, Entry and Exit must include 2 cordinates"
                     )
 
-            if (
-                '/' in conf_dict["OUTPUT_FILE"]
-                or "\\" in conf_dict["OUTPUT_FILE"]
-            ):
+            if ('/' in output_file) or ("\\" in output_file):
                 raise InvalidConf(
-                    f"Invalid config {conf_dict["OUTPUT_FILE"]}, "
+                    f"Invalid config {output_file}, "
                     "file name must not include '/' or double '\\'"
                     )
-            if (
-                conf_dict["OUTPUT_FILE"] == ".."
-                or conf_dict["OUTPUT_FILE"] == "."
-            ):
+            if (output_file == "..") or (output_file == "."):
                 raise InvalidConf(
-                    f"Invalid config '{conf_dict["OUTPUT_FILE"]}', "
-                    "it is a directory"
+                    f"Invalid config '{output_file}', it is a directory"
                     )
 
             booleen = ["True", "False"]
-            if conf_dict["PERFECT"] not in booleen:
+            if perfect not in booleen:
                 raise InvalidConf(
-                    f"Invalid config '{conf_dict["PERFECT"]}', is not a value"
+                    f"Invalid config '{perfect}', is not a value"
                     )
-            conf_dict["PERFECT"] = bool(conf_dict["PERFECT"])
+            conf_dict["PERFECT"] = bool(perfect)
 
             if "SEED" in conf_dict:
-                conf_dict["SEED"] = int(conf_dict["SEED"])
+                conf_dict["SEED"] = int(seed)
             else:
                 conf_dict["SEED"] = None
 
@@ -132,7 +131,7 @@ def pars() -> Optional[Dict[str, Any]]:
                     "Invalid config, a cordinate is out of range"
                     )
 
-            if conf_dict["ENTRY"] == conf_dict["EXIT"]:
+            if entry == exit:
                 raise InvalidConf(
                     "Invalid config, Entry and Exit must be different"
                     )

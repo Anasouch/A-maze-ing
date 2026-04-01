@@ -21,3 +21,4 @@ if __name__ == "__main__":
         )
     maze_gen = maze.generate()
     display_maze(maze_gen)
+    print(conf_dict)
