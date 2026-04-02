@@ -43,7 +43,8 @@ def class_pars(conf_list: List[Any]) -> int:
                 f"Invalid config '{perfect}', is not a value"
                 )
 
-        seed = int(seed)
+        if seed:
+            seed = int(seed)
 
         if width <= 0 or height <= 0:
             raise InvalidConf(
@@ -163,11 +164,6 @@ class MazeGenerator:
         perfect: bool,
         seed: int | None
     ) -> None:
-        if not seed:
-            seed = random.randint(-2147483648, 2147483647)
-        conf_list = [width, height, entry, exit, perfect, seed]
-        if class_pars(conf_list) == 0:
-            sys.exit()
         self.width = width
         self.height = height
         self.entry = entry
@@ -175,9 +171,19 @@ class MazeGenerator:
         self.perfect = perfect
         self.seed = seed
 
+        # Parsing before generate
+        conf_list = [width, height, entry, exit, perfect, seed]
+        if class_pars(conf_list) == 0:
+            sys.exit()
+
+        # Fixed the Seed
+        random.seed(self.seed)
+
     def generate(self) -> Grid:
         self.grid = Grid(self.width, self.height)
         self.visited: List[List[bool]] = []
+
+        # Paint all cells
         for _ in range(self.height):
             row: List[bool] = []
             for _ in range(self.width):
@@ -186,17 +192,17 @@ class MazeGenerator:
 
         self.visited[0][0] = True
 
+        # Change the cells status of [42] to be visited
         middle_x = self.width // 2
         middle_y = self.height // 2
-
         self.coordes = self.nbr_42coordes(
             middle_x, middle_y, self.width, self.height
             )
         for x, y in self.coordes:
             self.visited[y][x] = True
 
+        # [DFS] Algorithm
         stack: List[Tuple[int, int]] = [(0, 0)]
-
         while stack:
             x, y = stack[-1]
             directions: List[str] = Direction.get_all_directions()
@@ -226,6 +232,7 @@ class MazeGenerator:
         nx, ny = Direction.get_next_position(x, y, direction)
         self.grid.cells[ny][nx].open_wall(opposite)
 
+    # Get [42] coordinates
     @staticmethod
     def nbr_42coordes(
         x: int, y: int, width: int, height: int
@@ -265,11 +272,13 @@ class MazeGenerator:
 
         # Even Height
         if height % 2 == 0:
+
             # Number "4"
             if width % 2 == 0:
                 coordes.append((x - 4, y - 3))
             else:
                 coordes.append((x - 3, y - 3))
+
             # Number "2"
             coordes.append((x + 1, y - 3))
             coordes.append((x + 2, y - 3))

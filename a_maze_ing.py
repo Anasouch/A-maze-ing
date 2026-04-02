@@ -1,7 +1,6 @@
 from mazegen import MazeGenerator
 from display import MazeDisplay
 from parsing import pars
-import random
 import sys
 import os
 
@@ -11,9 +10,11 @@ def clear_terminal() -> None:
 
 
 if __name__ == "__main__":
+    # Parsing
     conf_dict = pars()
     if not conf_dict:
         sys.exit()
+
     maze_gen = MazeGenerator(
         conf_dict["WIDTH"],
         conf_dict["HEIGHT"],
@@ -25,12 +26,10 @@ if __name__ == "__main__":
     entry = maze_gen.entry
     exit = maze_gen.exit
     seed = maze_gen.seed
-    maze_color = 0
-    choice = 1
-    while True:
-        if choice == 1:
-            maze = maze_gen.generate()
 
+    maze = maze_gen.generate()
+    maze_color = 0
+    while True:
         clear_terminal()
         display = MazeDisplay(maze)
         display.display(entry, exit, maze_color)
@@ -49,13 +48,25 @@ if __name__ == "__main__":
                     break
                 raise Exception()
             except Exception:
-                print("\nTry again -> ", end="")
-        if choice == 3:
+                clear_terminal()
+                display.display(entry, exit, maze_color)
+
+                print()
+                print("=== A_maze_ing ===")
+                print("1. Re-generate a new maze")
+                print("2. Rotate maze colors")
+                print("3. Quit")
+                print()
+
+                print("🔴 FAILED: Try again")
+
+        if choice == 3:  # Quit
             sys.exit()
-        elif choice == 2:
+        elif choice == 2:  # Rotate maze colors
             if maze_color == 4:
                 maze_color = 0
             else:
                 maze_color += 1
-        else:
-            seed = random.randint(-2147483648, 2147483647)
+        else:  # Re-generate a new maze
+            if not maze_gen.seed:
+                maze = maze_gen.generate()
