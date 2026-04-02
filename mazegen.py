@@ -91,9 +91,6 @@ class Cell:
     def has_wall(self, direction: str) -> bool:
         return self.walls[direction]
 
-    # def get_all_walls(self) -> Dict[str, bool]:
-    #     return self.walls
-
 
 class Direction:
     NORTH = "north"

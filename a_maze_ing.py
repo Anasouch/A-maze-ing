@@ -13,21 +13,27 @@ def clear_terminal():
 class MazeDisplay:
     def __init__(self, grid: Grid):
         self.grid = grid
-        self.b_green = '\033[92m'
-        self.d_green = '\033[32m'
+        self.green = '\033[32m'
         self.red = '\033[31m'
+        self.yellow = '\033[93m'
+        self.blue = '\033[94m'
+        self.orange = '\033[38;5;208m'
         self.reset = '\033[0m'
 
         self.wall = "██"
         self.passage = "  "
-        self.exit = f"{self.b_green}🌀{self.reset}"
-        self.entry = f"{self.red}🐣{self.reset}"
+        self.exit = f"{self.red}🚩{self.reset}"
+        self.entry = f"{self.red}⚽︎{self.reset}"
 
     def set_color(self, choosen_color) -> None:
         if choosen_color == 1:
-            self.wall = f"{self.d_green}██{self.reset}"
+            self.wall = f"{self.green}██{self.reset}"
         elif choosen_color == 2:
-            self.wall = f"{self.red}██{self.reset}"
+            self.wall = f"{self.orange}██{self.reset}"
+        elif choosen_color == 3:
+            self.wall = f"{self.yellow}██{self.reset}"
+        elif choosen_color == 4:
+            self.wall = f"{self.blue}██{self.reset}"
 
     def display(
         self,
@@ -118,7 +124,7 @@ if __name__ == "__main__":
         if choice == 3:
             break
         elif choice == 2:
-            if maze_color == 2:
+            if maze_color == 4:
                 maze_color = 0
             else:
                 maze_color += 1
