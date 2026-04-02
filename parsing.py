@@ -72,6 +72,10 @@ def pars() -> Optional[Dict[str, Any]]:
 
             width = conf_dict["WIDTH"] = int(width)
             height = conf_dict["HEIGHT"] = int(height)
+            if width < 9 or height < 7:
+                raise InvalidConf(
+                    "Invalid config, min dimensions is [WIDTH=9, HEIGHT=7]"
+                    )
 
             entry = entry.split(",")
             en1 = int(entry[0])

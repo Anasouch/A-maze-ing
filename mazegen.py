@@ -18,6 +18,10 @@ def class_pars(conf_list: List[Any]) -> int:
     try:
         width = int(width)
         height = int(height)
+        if width < 9 or height < 7:
+            raise InvalidConf(
+                "Invalid config, min dimensions is [WIDTH=9, HEIGHT=7]"
+                )
 
         if isinstance(entry, tuple) is False:
             raise InvalidConf(
