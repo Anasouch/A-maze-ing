@@ -91,6 +91,9 @@ class Cell:
     def has_wall(self, direction: str) -> bool:
         return self.walls[direction]
 
+    # def get_all_walls(self) -> Dict[str, bool]:
+    #     return self.walls
+
 
 class Direction:
     NORTH = "north"
@@ -148,6 +151,15 @@ class Grid:
 
     def is_in_bounds(self, x: int, y: int) -> bool:
         return 0 <= x < self.width and 0 <= y < self.height
+
+    def get_cell(self, x: int, y: int) -> Cell:
+        return self.cells[y][x]
+
+    def get_width(self) -> int:
+        return self.width
+
+    def get_height(self) -> int:
+        return self.height
 
 
 class MazeGenerator:
