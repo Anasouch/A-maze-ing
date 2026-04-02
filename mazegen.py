@@ -75,6 +75,16 @@ def class_pars(conf_list: List[Any]) -> int:
             raise InvalidConf(
                 "Invalid config, Entry and Exit must be different"
                 )
+
+        middle_x = width // 2
+        middle_y = height // 2
+        coordes = MazeGenerator.nbr_42coordes(
+            middle_x, middle_y, width, height
+            )
+        if (entry in coordes) or (exit in coordes):
+            raise InvalidConf(
+                "Invalid config, Entry and Exit must out of [42] range"
+                )
     except Exception as e:
         print(f"ERROR: {e}")
         return 0
@@ -178,7 +188,7 @@ class MazeGenerator:
         # Parsing before generate
         conf_list = [width, height, entry, exit, perfect, seed]
         if class_pars(conf_list) == 0:
-            sys.exit()
+            sys.exit(1)
 
         # Fixed the Seed
         random.seed(self.seed)
@@ -249,6 +259,8 @@ class MazeGenerator:
         coordes.append((x - 3, y))
         coordes.append((x - 1, y + 1))
         coordes.append((x - 1, y + 2))
+        coordes.append((x - 1, y - 1))
+        coordes.append((x - 1, y - 2))
 
         # Common "2" part
         coordes.append((x + 1, y))

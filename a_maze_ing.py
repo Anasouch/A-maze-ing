@@ -13,7 +13,7 @@ if __name__ == "__main__":
     # Parsing
     conf_dict = pars()
     if not conf_dict:
-        sys.exit()
+        sys.exit(1)
 
     maze_gen = MazeGenerator(
         conf_dict["WIDTH"],
@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
         while True:
             try:
-                choice = int(input("Enter a number from 1 to 3: "))
+                choice = int(input("--> Enter a number from 1 to 3: "))
                 if choice in range(1, 4):
                     break
                 raise Exception()

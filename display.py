@@ -63,6 +63,7 @@ class MazeDisplay:
 
                 maze[cy][cx] = PASSAGE
 
+                # Open road
                 if not cell.has_wall("north"):
                     maze[cy - 1][cx] = PASSAGE
                 if not cell.has_wall("south"):
@@ -72,13 +73,23 @@ class MazeDisplay:
                 if not cell.has_wall("east"):
                     maze[cy][cx + 1] = PASSAGE
 
+                # Draw [42]
                 middle_x = self.maze.width // 2
                 middle_y = self.maze.height // 2
                 coordes = MazeGenerator.nbr_42coordes(
                     middle_x, middle_y, self.maze.width, self.maze.height
                     )
                 if (x, y) in coordes:
-                    maze[cy][cx] = NUMBER_42
+                    maze[cy][cx] = WALL
+
+                    maze[cy - 1][cx - 1] = NUMBER_42
+                    maze[cy - 1][cx] = NUMBER_42
+                    maze[cy - 1][cx + 1] = NUMBER_42
+                    maze[cy][cx + 1] = NUMBER_42
+                    maze[cy + 1][cx + 1] = NUMBER_42
+                    maze[cy + 1][cx] = NUMBER_42
+                    maze[cy + 1][cx - 1] = NUMBER_42
+                    maze[cy][cx - 1] = NUMBER_42
 
         x, y = entry
         maze[y * 2 + 1][x * 2 + 1] = ENTRY

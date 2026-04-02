@@ -35,9 +35,9 @@ def pars() -> Optional[Dict[str, Any]]:
             conf_lists = []
             conf_dict: Dict[str, Any] = {}
 
-            for s in get_conf:
-                if s.strip() != "" and s.strip()[0] != '#':
-                    conf_lists.append(s.split("=", 1))
+            for line in get_conf:
+                if line.strip() != "" and line.strip()[0] != '#':
+                    conf_lists.append(line.split("=", 1))
 
             for a_list in conf_lists:
                 if len(a_list) == 1:
@@ -50,6 +50,16 @@ def pars() -> Optional[Dict[str, Any]]:
                     a_list[1] = a_list[1][:i]
                 conf_dict[a_list[0].upper().strip()] = a_list[1].strip()
 
+            keys = ["WIDTH", "HEIGHT", "ENTRY", "EXIT",
+                    "OUTPUT_FILE", "PERFECT", "SEED"]
+            for k in conf_dict.keys():
+                if k not in keys:
+                    raise InvalidConf(f"Invalid config '{k}', is not a key")
+            keys.remove("SEED")
+            for k in keys:
+                if k not in list(conf_dict.keys()):
+                    raise MissingConf(f"Missing the '{k}' config")
+
             width = conf_dict["WIDTH"]
             height = conf_dict["HEIGHT"]
             entry = conf_dict["ENTRY"]
@@ -58,17 +68,6 @@ def pars() -> Optional[Dict[str, Any]]:
             perfect = conf_dict["PERFECT"]
             if "SEED" in conf_dict:
                 seed = conf_dict["SEED"]
-
-            keys = ["WIDTH", "HEIGHT", "ENTRY", "EXIT",
-                    "OUTPUT_FILE", "PERFECT", "SEED"]
-            for k in conf_dict.keys():
-                if k not in keys:
-                    raise InvalidConf(f"Invalid config '{k}', is not a key")
-            if "SEED" in keys:
-                keys.remove("SEED")
-            for k in keys:
-                if k not in conf_dict.keys():
-                    raise MissingConf(f"Missing the '{k}' config")
 
             width = conf_dict["WIDTH"] = int(width)
             height = conf_dict["HEIGHT"] = int(height)
