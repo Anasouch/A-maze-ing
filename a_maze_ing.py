@@ -1,91 +1,13 @@
-from mazegen import MazeGenerator, Grid
+from mazegen import MazeGenerator
+from display import MazeDisplay
 from parsing import pars
-from typing import Tuple
 import random
 import sys
 import os
 
 
-def clear_terminal():
+def clear_terminal() -> None:
     os.system('cls' if os.name == 'nt' else 'clear')
-
-
-class MazeDisplay:
-    def __init__(self, grid: Grid):
-        self.grid = grid
-        self.green = '\033[32m'
-        self.red = '\033[31m'
-        self.yellow = '\033[93m'
-        self.blue = '\033[94m'
-        self.orange = '\033[38;5;208m'
-        self.reset = '\033[0m'
-
-        self.wall = "██"
-        self.passage = "  "
-        self.exit = f"{self.red}🚩{self.reset}"
-        self.entry = f"{self.red}⚽︎{self.reset}"
-
-    def set_color(self, choosen_color) -> None:
-        if choosen_color == 1:
-            self.wall = f"{self.green}██{self.reset}"
-        elif choosen_color == 2:
-            self.wall = f"{self.orange}██{self.reset}"
-        elif choosen_color == 3:
-            self.wall = f"{self.yellow}██{self.reset}"
-        elif choosen_color == 4:
-            self.wall = f"{self.blue}██{self.reset}"
-
-    def display(
-        self,
-        entry: Tuple[int, int],
-        exit: Tuple[int, int],
-        choosen_color: int
-    ) -> None:
-        if choosen_color:
-            self.set_color(choosen_color)
-        width = self.grid.get_width()
-        height = self.grid.get_height()
-        PASSAGE = self.passage
-        ENTRY = self.entry
-        EXIT = self.exit
-        WALL = self.wall
-
-        maze = []
-        for i in range(height * 2 + 1):
-            row = []
-            for j in range(width * 2 + 1):
-                row.append(WALL)
-            maze.append(row)
-
-        for y in range(height):
-            for x in range(width):
-                cell = self.grid.get_cell(x, y)
-
-                cx = x * 2 + 1
-                cy = y * 2 + 1
-
-                maze[cy][cx] = PASSAGE
-
-                if not cell.has_wall("north"):
-                    maze[cy - 1][cx] = PASSAGE
-                if not cell.has_wall("south"):
-                    maze[cy + 1][cx] = PASSAGE
-                if not cell.has_wall("west"):
-                    maze[cy][cx - 1] = PASSAGE
-                if not cell.has_wall("east"):
-                    maze[cy][cx + 1] = PASSAGE
-
-        x, y = entry
-        maze[y * 2 + 1][x * 2 + 1] = ENTRY
-
-        x, y = exit
-        maze[y * 2 + 1][x * 2 + 1] = EXIT
-
-        for row in maze:
-            line = ""
-            for _ in row:
-                line += _
-            print(line)
 
 
 if __name__ == "__main__":
@@ -104,15 +26,22 @@ if __name__ == "__main__":
     exit = maze_gen.exit
     seed = maze_gen.seed
     maze_color = 0
+    choice = 1
     while True:
-        maze = maze_gen.generate()
+        if choice == 1:
+            maze = maze_gen.generate()
 
+        clear_terminal()
         display = MazeDisplay(maze)
-        display.display(entry, exit, choosen_color=maze_color)
-        print("\n=== A_maze_ing ===")
-        print("1. Re_generate a new maze")
+        display.display(entry, exit, maze_color)
+
+        print()
+        print("=== A_maze_ing ===")
+        print("1. Re-generate a new maze")
         print("2. Rotate maze colors")
-        print("3. Quite\n")
+        print("3. Quit")
+        print()
+
         while True:
             try:
                 choice = int(input("Enter a number from 1 to 3: "))
@@ -122,12 +51,11 @@ if __name__ == "__main__":
             except Exception:
                 print("\nTry again -> ", end="")
         if choice == 3:
-            break
+            sys.exit()
         elif choice == 2:
             if maze_color == 4:
                 maze_color = 0
             else:
                 maze_color += 1
         else:
-            maze_gen.seed = random.randint(-2147483648, 2147483647)
-        clear_terminal()
+            seed = random.randint(-2147483648, 2147483647)

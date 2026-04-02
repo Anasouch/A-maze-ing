@@ -35,7 +35,7 @@ def class_pars(conf_list: List[Any]) -> int:
 
         if len(entry) != 2 or len(exit) != 2:
             raise InvalidConf(
-                "Invalid config, Entry and Exit must include 2 cordinates"
+                "Invalid config, Entry and Exit must include 2 coordinates"
                 )
 
         if isinstance(perfect, bool) is False:
@@ -55,7 +55,7 @@ def class_pars(conf_list: List[Any]) -> int:
             or ((ex1 < 0) or (ex2 < 0))
         ):
             raise InvalidConf(
-                "Invalid config, cordinates must be positive"
+                "Invalid config, coordinates must be positive"
                 )
 
         if (
@@ -63,7 +63,7 @@ def class_pars(conf_list: List[Any]) -> int:
             or ((ex1 >= width) or (ex2 >= height))
         ):
             raise InvalidConf(
-                "Invalid config, a cordinate is out of range"
+                "Invalid config, a coordinate is out of range"
                 )
 
         if entry == exit:
@@ -152,12 +152,6 @@ class Grid:
     def get_cell(self, x: int, y: int) -> Cell:
         return self.cells[y][x]
 
-    def get_width(self) -> int:
-        return self.width
-
-    def get_height(self) -> int:
-        return self.height
-
 
 class MazeGenerator:
     def __init__(
@@ -167,7 +161,7 @@ class MazeGenerator:
         entry: Tuple[int, int],
         exit: Tuple[int, int],
         perfect: bool,
-        seed=None
+        seed: int | None
     ) -> None:
         if not seed:
             seed = random.randint(-2147483648, 2147483647)
@@ -191,6 +185,15 @@ class MazeGenerator:
             self.visited.append(row)
 
         self.visited[0][0] = True
+
+        middle_x = self.width // 2
+        middle_y = self.height // 2
+
+        self.coordes = self.nbr_42coordes(
+            middle_x, middle_y, self.width, self.height
+            )
+        for x, y in self.coordes:
+            self.visited[y][x] = True
 
         stack: List[Tuple[int, int]] = [(0, 0)]
 
@@ -223,6 +226,63 @@ class MazeGenerator:
         nx, ny = Direction.get_next_position(x, y, direction)
         self.grid.cells[ny][nx].open_wall(opposite)
 
+    @staticmethod
+    def nbr_42coordes(
+        x: int, y: int, width: int, height: int
+    ) -> List[Tuple[int, int]]:
+        coordes = []
+
+        # Common "4" part
+        coordes.append((x - 1, y))
+        coordes.append((x - 2, y))
+        coordes.append((x - 3, y))
+        coordes.append((x - 1, y + 1))
+        coordes.append((x - 1, y + 2))
+
+        # Common "2" part
+        coordes.append((x + 1, y))
+        coordes.append((x + 2, y))
+        coordes.append((x + 3, y))
+        coordes.append((x + 1, y + 1))
+        coordes.append((x + 1, y + 2))
+        coordes.append((x + 2, y + 2))
+        coordes.append((x + 3, y + 2))
+        coordes.append((x + 3, y - 1))
+        coordes.append((x + 3, y - 2))
+
+        # Even Width
+        if width % 2 == 0:
+            # Number "4"
+            coordes.append((x - 4, y))
+            coordes.append((x - 4, y - 1))
+            coordes.append((x - 4, y - 2))
+
+        # Odd Width
+        else:
+            # Number "4"
+            coordes.append((x - 3, y - 1))
+            coordes.append((x - 3, y - 2))
+
+        # Even Height
+        if height % 2 == 0:
+            # Number "4"
+            if width % 2 == 0:
+                coordes.append((x - 4, y - 3))
+            else:
+                coordes.append((x - 3, y - 3))
+            # Number "2"
+            coordes.append((x + 1, y - 3))
+            coordes.append((x + 2, y - 3))
+            coordes.append((x + 3, y - 3))
+
+        # Odd Height
+        else:
+            # Number "2"
+            coordes.append((x + 1, y - 2))
+            coordes.append((x + 2, y - 2))
+
+        return coordes
+
 
 class MazeOutput:
 
@@ -250,9 +310,9 @@ class MazeOutput:
     ) -> None:
 
         with open(filename, "w") as f:
-            for y in range(grid.get_height()):
+            for y in range(grid.height):
                 line = ""
-                for x in range(grid.get_width()):
+                for x in range(grid.width):
                     cell = grid.get_cell(x, y)
                     hex_value = self.cell_to_hex(cell)
                     line += format(hex_value, "X")

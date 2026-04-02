@@ -85,7 +85,7 @@ def pars() -> Optional[Dict[str, Any]]:
 
             if len(entry) != 2 or len(exit) != 2:
                 raise InvalidConf(
-                    "Invalid config, Entry and Exit must include 2 cordinates"
+                    "Invalid config, Entry and Exit must include 2 coordinates"
                     )
 
             if ('/' in output_file) or ("\\" in output_file):
@@ -120,7 +120,7 @@ def pars() -> Optional[Dict[str, Any]]:
                 or ((ex1 < 0) or (ex2 < 0))
             ):
                 raise InvalidConf(
-                    "Invalid config, cordinates must be positive"
+                    "Invalid config, coordinates must be positive"
                     )
 
             if (
@@ -128,7 +128,7 @@ def pars() -> Optional[Dict[str, Any]]:
                 or ((ex1 >= width) or (ex2 >= height))
             ):
                 raise InvalidConf(
-                    "Invalid config, a cordinate is out of range"
+                    "Invalid config, a coordinate is out of range"
                     )
 
             if entry == exit:
