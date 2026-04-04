@@ -260,7 +260,6 @@ class MazeGenerator:
         coordes.append((x - 1, y + 1))
         coordes.append((x - 1, y + 2))
         coordes.append((x - 1, y - 1))
-        coordes.append((x - 1, y - 2))
 
         # Common "2" part
         coordes.append((x + 1, y))
@@ -299,6 +298,7 @@ class MazeGenerator:
             coordes.append((x + 1, y - 3))
             coordes.append((x + 2, y - 3))
             coordes.append((x + 3, y - 3))
+            coordes.append((x - 1, y - 2))
 
         # Odd Height
         else:

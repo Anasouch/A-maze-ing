@@ -1,10 +1,11 @@
 from mazegen import Grid, MazeGenerator
-from typing import Tuple
+from typing import Tuple, List
 
 
 class MazeDisplay:
-    def __init__(self, maze: Grid):
+    def __init__(self, maze: Grid, path: List[Tuple[int, int]] | None):
         self.maze = maze
+        self.path = path
 
         # colors
         self.green = '\033[32m'
@@ -18,7 +19,7 @@ class MazeDisplay:
         self.wall = "██"
         self.passage = "  "
         self.exit = "🚩"
-        self.entry = f"{self.red}⚽︎{self.reset}"
+        self.entry = f"{self.yellow}⚽︎{self.reset}"
 
     def set_color(self, choosen_color: int) -> None:
         if choosen_color == 1:
@@ -90,6 +91,12 @@ class MazeDisplay:
                     maze[cy + 1][cx] = NUMBER_42
                     maze[cy + 1][cx - 1] = NUMBER_42
                     maze[cy][cx - 1] = NUMBER_42
+
+                # display Path
+                if self.path:
+                    ENTRY = f"{self.yellow}⚽︎{self.reset}"
+                    if ((x, y) in self.path):
+                        maze[cy][cx] = f"{self.red}⚽︎{self.reset}"
 
         x, y = entry
         maze[y * 2 + 1][x * 2 + 1] = ENTRY
