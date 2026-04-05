@@ -39,9 +39,9 @@ def path_animation(
             if i < len(path) - 1:
                 print("--> Enter a number from 1 to 5:  ", end="", flush=True)
 
-            sleep(0.05)
+            sleep(0.07)
 
-    except Exception as e:
+    except (Exception, KeyboardInterrupt) as e:
         print(f"ERROR: {e}")
 
     finally:
