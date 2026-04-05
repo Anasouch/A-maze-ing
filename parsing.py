@@ -106,7 +106,10 @@ def pars() -> Optional[Dict[str, Any]]:
                 raise InvalidConf(
                     f"Invalid config '{perfect}', is not a value"
                     )
-            conf_dict["PERFECT"] = bool(perfect)
+            if perfect == "True":
+                conf_dict["PERFECT"] = True
+            else:
+                conf_dict["PERFECT"] = False
 
             if "SEED" in conf_dict:
                 conf_dict["SEED"] = int(seed)
